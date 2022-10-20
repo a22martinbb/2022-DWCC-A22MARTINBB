@@ -70,7 +70,7 @@ console.log(`O 25 de Julio de este ano foi ${resultado}`);
 
 fecha = new Date("July 25, 2000");
 
-fecha2 = new Date("October 13, 2022");
+fecha2 = new Date();
 
 
 let diasPasados =  fecha2.valueOf() - fecha.valueOf() ;
@@ -88,7 +88,7 @@ function diasEnUnMes(año, mes) {
 	return new Date(año, mes, 0).getDate();
 }
 
-console.log(diasEnUnMes(2020, 2));
+console.log(diasEnUnMes(2022, 12));
 
 //EJERCICIO 5
 
