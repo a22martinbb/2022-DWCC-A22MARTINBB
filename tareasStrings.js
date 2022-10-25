@@ -1,31 +1,3 @@
-//EJERCICIO 1
-let minuto = 293;
-
-function formateaMinutos(minutos) {
-    let horas = minutos / 60;
-    horas = Math.round(horas);
-    if (horas < 10) {
-        horas = "0" + horas;
-    }
-    let resto = minutos % 60;
-    if (resto < 10) {
-        resto = "0" + resto;
-    }
-    return horas + ":" + resto;
-}
-console.log(minuto + "min");
-console.log(formateaMinutos(minuto));
-
-//EJERCICIO 2
-
-function calculoRadio(radio) {
-    area = Math.PI * (Math.pow(radio, 2));
-   
-    return area;
-}
-
-console.log(calculoRadio(12));
-
 //EJERCICIOS STRINGS
 //EJERCICIO 1
 
@@ -34,7 +6,7 @@ function retorcerCadena(cadena) {
     for (i = cadena.length - 1; i >= 0; i--){
         array += cadena[i];
     }
-    return array
+    return cadena.split("").reverse().join("");
 }
 
 console.log(retorcerCadena("Hola que tal amigo"));
@@ -43,13 +15,12 @@ console.log(retorcerCadena("Hola que tal amigo"));
 
 function elimnaCaracteres(string, array) {
     for (i = 0; i < array.length; i++){
-        salida = string.indexOf(array[i]);
-        string = string.replace(string[salida], "");
+        string = string.replaceAll(array[i], "");
     }
     return string;
 }
 
-console.log(elimnaCaracteres("hola", ["a", "o"]));
+console.log(elimnaCaracteres("hola que tal estás amigo", ["a", "o"]));
 
 //EJERCICIO 3
 
@@ -62,6 +33,7 @@ function cuenta(texto) {
         if (contador[valor] === undefined) {contador[valor] = 1} else {contador[valor] += 1}
     });
 
+    console.log(contador);
     let auxRepeticion;
     let auxLetra    
     Object.entries(contador).forEach(([key, value]) => {
@@ -146,55 +118,30 @@ function infoAeroporto(archivo) {
 infoAeroporto(flightsInfo);
 
 
+//EJERCICIO 1
+let minuto = 293;
 
+function formateaMinutos(minutos) {
+    let horas = minutos / 60;
+    horas = Math.round(horas);
+    if (horas < 10) {
+        horas = "0" + horas;
+    }
+    let resto = minutos % 60;
+    if (resto < 10) {
+        resto = "0" + resto;
+    }
+    return horas + ":" + resto;
+}
+console.log(minuto + "min");
+console.log(formateaMinutos(minuto));
 
+//EJERCICIO 2
 
+function calculoRadio(radio) {
+    area = Math.PI * (Math.pow(radio, 2));
+   
+    return area;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+console.log(calculoRadio(12));
