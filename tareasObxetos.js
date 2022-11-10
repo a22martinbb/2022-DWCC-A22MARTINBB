@@ -67,6 +67,7 @@ let nomeCompleto = inventors.map(function (inventor) {
 
 
 nomeCompleto.sort((a, b) => (a[a.indexOf(" ") + 1] < b[b.indexOf(" ") + 1] ? -1 : 1));
+console.log("proba");
 console.log(nomeCompleto);
 
 
@@ -82,11 +83,11 @@ console.log("hola");
 console.log(inventorsXVI);
 
 //4-2
-console.log(inventorsNames);
 
 //4-3
-inventorsNames.sort((a, b) => (a.last < b.last) ? -1 : 1);
-console.log(inventorsNames);
+inventors2 = inventors.sort((a, b) => (a.last < b.last) ? -1 : 1);
+console.log("proba2");
+console.log(inventors2);
 
 //4-E
 inventors.sort((a, b) => (a.year < b.year) ? -1 : 1);
@@ -98,7 +99,12 @@ inventors.forEach((inventor) => {
     edadTotal += inventor.passed - inventor.year;
 });
 
-console.log(edadTotal);
+
+totalYear = inventors.reduce((total, inventor) => {
+    return total + (inventor.passed - inventor.year);
+}, 0)
+
+console.log(totalYear);
 
 //4-G
 console.log( inventors.sort((a, b) => (a.passed - a.year > b.passed - b.year) ? -1 : 1));
