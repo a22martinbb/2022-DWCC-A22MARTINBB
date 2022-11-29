@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <style>
+    table {
+       border-collapse: collapse;
+     }
+     th, td {
+       border: 1px solid black;
+       padding: 4px;
+     }
+     th {
+       cursor: pointer;
+     }
+     th:hover {
+       background: yellow;
+     }
+  </style>
+</head>
+
+<body>
+
+  <table id="grid">
+    <thead>
+      <tr>
+        <th data-type="number">Age</th>
+        <th data-type="string">Name</th>
+      </tr>
+    </thead>
+    <tbody id="tbody">
+      <tr>
+        <td>5</td>
+        <td>John</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Pete</td>
+      </tr>
+      <tr>
+        <td>12</td>
+        <td>Ann</td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td>Eugene</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>Ilya</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <script>
+    function sortColumn(colNum, type){
+      tbody = grid.querySelector("tbody");        
+            array = Array.from(tbody.rows); 
+
+            let comparacion;
+            if(type == 'number'){
+              comparacion = function(fila1, fila2){
+                return fila1.cells[colNum].innerHTML - fila2.cells[colNum].innerHTML;
+
+              }
+            }else if(type == 'string'){
+              comparacion = function(fila1, fila2){
+                return fila1.cells[colNum].innerHTML > fila2.cells[colNum].innerHTML ? 1 : -1;
+
+              }
+            }
+
+            array.sort(comparacion);
+            tbody.append(...array)
+    }
+
+    cabeceiras = document.getElementsByTagName("th");
+
+    for (const th of cabeceiras) {
+      th.addEventListener("click", (e) => {
+        
+        columna = e.target.cellIndex;
+        type = e.target.dataset.type;
+        sortColumn(columna, type);
+
+      })
+    }
+    
+  </script>
+
+</body>
+</html>
