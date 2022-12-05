@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="cube" style="height: 100px; width: 100px;      background-color:antiquewhite;">
+    </div>
+    <textarea name="area" id="text" style="height: 100px; width: 100px;      background-color:antiquewhite;" hidden>Hola que tal</textarea>
+
+    <script>
+        cube = document.getElementById("cube");
+        textarea = document.getElementById("text");
+
+        cube.addEventListener("click", ()=>{
+            cube.hidden = true;
+            textarea.hidden = false;
+        })
+
+        textarea.addEventListener("blur", ()=>{
+            cube.hidden = false;
+            textarea.hidden = true;
+        })
+
+    </script>
+</body>
+</html>

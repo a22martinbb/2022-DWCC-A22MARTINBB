@@ -8,16 +8,20 @@
 </head>
 <body>
     <select id="opciones">
+        <option>-----</option>
         <option value="tv">Television</option>
         <option value="radio">Radio</option>
 
     </select>
 
     <script>
-        select = document.getElementById("opciones").options;
-        select.addEventListener("click", ()=>{
-            console.log(select.value);
+        select = document.getElementById("opciones");
+        console.log(select);
+     
+            select.addEventListener("click", (e)=>{
+            console.log(e.target.value);
         })
+        
         
         
     </script>

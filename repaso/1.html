@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="cube" style="height: 100px; width: 100px; background-color:antiquewhite;"></div>
+    <br><br>
+    <form>
+        Ancho <input type="number" min="1" max="1000" id="ancho"><br><br>
+        Alto <input type="number" id="alto"><br><br>
+    </form>
+    <script>
+        ancho = document.getElementById("ancho");
+        alto = document.getElementById("alto");
+        cube = document.getElementById("cube");
+
+        ancho.addEventListener("input", () => {
+            anchoPx = ancho.value + "px";
+            cube.style.width = anchoPx;
+        })
+
+        alto.addEventListener("input", () => {
+            altoPx = alto.value + "px";
+            cube.style.height = altoPx;
+        })     
+    </script>
+</body>
+</html>
