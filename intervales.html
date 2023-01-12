@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    let seg
+    function escribirNumeros(from, ata){
+        if(seg == null){
+            seg = from;
+        }
+
+        if(seg == ata){
+            clearInterval(intervalo);
+        }
+
+        console.log(seg);
+
+        if(seg <= ata){
+            seg++;
+        }
+    }
+
+    function escribirNumerosCris(from, to){
+        let numero = desde;
+        let timerID = setInterval(() => {
+            console.log(numero);
+            if (numero == ata) clearInterval(timerID);
+            else numero++;
+        }, 1000);
+    }
+
+    //let intervalo = setInterval(escribirNumeros, 1000, 3, 5);
+
+    function escribirNumeros2(from, to){
+        let numero = from;
+
+        setTimeout(function imprimir() {
+            console.log(numero);
+            if(numero < to) setTimeout(imprimir, 1000);
+            numero++;
+        })
+    }
+
+    escribirNumeros2(1, 4);
+
+    //let intervalo = setTimeout(escribirNumeros, 1000, 3, 4);
+</script>
+</html>
+

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+
+<script>
+
+const httpRequest = new XMLHttpRequest();
+
+httpRequest.open(
+    "GET", 
+    "https://raw.githubusercontent.com/mdn/learning-area/main/javascript/oojs/tasks/json/sample.json"
+    );
+
+httpRequest.send();
+
+httpRequest.addEventListener("load", function () {
+    let salida = httpRequest.response;
+    const gatos = JSON.parse(salida);
+
+    let f = 0;
+    let m = 0;
+    let gatiños = 0;
+    let mensaje = "";
+    let contador = 0;
+
+
+    for (const iterator of gatos) {
+        if(contador < gatos.length -2){
+            mensaje += iterator["name"];
+            mensaje += ", ";
+        }else if(contador < gatos.length -1){
+            mensaje += iterator["name"];
+            mensaje += " e ";
+        }else{
+            mensaje += iterator["name"];
+        }
+        contador++;
+
+
+        iterator["kittens"].forEach(element => {
+            gatiños++;
+            element["gender"] == "f" ? f++ : m++;
+        });
+        
+
+        
+    }
+    console.log(mensaje);
+    console.log(`Hay ${gatiños} gatiños: ${f} femias e ${m} machos.`);
+});
+
+
+
+
+
+
+
+</script>
+</html>
+

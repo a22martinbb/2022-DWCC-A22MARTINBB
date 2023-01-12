@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+
+    <title>Our superheroes</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Faster+One" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+  </head>
+
+  <body>
+
+      <header>
+        <h1></h1>
+        <p>Hometown: <span id="hometown"></span> // Formed: <span id="formed"></span></p>
+      </header>
+        
+      <section>
+        
+      </section>
+
+      <script>
+
+      </script>
+  </body>
+  <script>
+    const httpRequest = new XMLHttpRequest();
+
+    httpRequest.open("GET", "https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json");
+
+    httpRequest.send();
+
+    httpRequest.addEventListener("load", ()=>{
+      let salida= httpRequest.response;
+      const heroes = JSON.parse(salida);
+      console.log(heroes);
+
+      document.querySelector("h1").innerHTML = heroes["squadName"]
+      document.getElementById("hometown").innerHTML = heroes["homeTown"];
+      document.getElementById("formed").innerHTML = heroes["formed"];
+
+      heroes["members"].forEach(element => {
+        let article = document.createElement("article");
+        article.innerHTML = `
+          <h2>${element["name"]}</h2>
+          <p>Secret identity: ${element["secretIdentity"]}</p>
+          <p>Age: ${element["age"]}</p>
+          <p>Superpowers:</p>
+        `;
+
+
+        let ul = document.createElement("ul");
+
+        element["powers"].forEach(poder => {
+          let li = document.createElement("li");
+          li.innerHTML = poder;
+          ul.append(li);
+        });
+
+        article.append(ul)
+
+
+
+        document.querySelector("section").append(article);
+      });
+
+    })
+  </script>
+</html>

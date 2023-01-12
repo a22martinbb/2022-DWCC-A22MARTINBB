@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 3em;
+        }
+
+        input{
+            margin-bottom: 2em
+        }
+    </style>
+</head>
+<body>
+    <form>
+        <label for="fname">What are you searching:</label><br>
+        <input type="text" id="search" name="search"><br>
+        
+        <input type="submit" id="submit" value="Submit">
+    </form> 
+
+    <p></p>
+    <img src="" height="200px" width="200px" alt="">
+</body>
+
+<script>
+    submit= document.getElementById("submit");
+
+    submit.addEventListener("click", function (e){
+        e.preventDefault();
+        var search = document.getElementById("search").value;
+        search = search.toLowerCase();
+
+        var httpRequest = new XMLHttpRequest;
+        httpRequest.open("GET", `https://pokeapi.co/api/v2/pokemon/${search}`);
+        httpRequest.send();
+        httpRequest.addEventListener("load", () => {
+            var salida= httpRequest.response;
+            const pokemon = JSON.parse(salida);
+            document.querySelector("img").src = pokemon["sprites"]["front_default"];
+        })
+    })
+
+   
+
+</script>
+</html>
