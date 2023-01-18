@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <input type="number" min="1" max="10" id="input" value="1">
+    <input type="submit" id="submit" >
+
+
+</body>
+<script>
+
+    document.getElementById("submit").addEventListener("click", (e)=>{
+        id = document.getElementById("input").value;
+
+        fetch(`https://jsonplaceholder.typicode.com/posts?userId=${id}`)
+            .then(response => response.json())
+            .then(json => {
+                json.forEach(element => {
+                    h4 = document.createElement("h4")
+                    h4.innerHTML = element["title"];
+                    document.querySelector("body").append(h4)
+
+                    p = document.createElement("p");
+                    p.innerHTML = element["body"];
+                    document.querySelector("body").append(p);
+
+                    hr = document.createElement("hr");
+                    document.querySelector("body").append(hr)
+
+                });
+            })
+    })
+
+
+    
+</script>
+</html>

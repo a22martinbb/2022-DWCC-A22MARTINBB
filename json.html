@@ -1,68 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
-    
-</body>
+  </head>
+  <body></body>
 
-<script>
+  <script>
+    let salida;
 
-const httpRequest = new XMLHttpRequest();
+    fetch(
+      "https://raw.githubusercontent.com/mdn/learning-area/main/javascript/oojs/tasks/json/sample.json"
+    )
+      .then((response) => {
+        if (response.ok) return response.json();
+        return Promise.reject(response);
+      })
+      .then((data) => {
+        const gatos = data;
 
-httpRequest.open(
-    "GET", 
-    "https://raw.githubusercontent.com/mdn/learning-area/main/javascript/oojs/tasks/json/sample.json"
-    );
+        let f = 0;
+        let m = 0;
+        let gatiños = 0;
+        let mensaje = "";
+        let contador = 0;
 
-httpRequest.send();
-
-httpRequest.addEventListener("load", function () {
-    let salida = httpRequest.response;
-    const gatos = JSON.parse(salida);
-
-    let f = 0;
-    let m = 0;
-    let gatiños = 0;
-    let mensaje = "";
-    let contador = 0;
-
-
-    for (const iterator of gatos) {
-        if(contador < gatos.length -2){
+        for (const iterator of gatos) {
+          if (contador < gatos.length - 2) {
             mensaje += iterator["name"];
             mensaje += ", ";
-        }else if(contador < gatos.length -1){
+          } else if (contador < gatos.length - 1) {
             mensaje += iterator["name"];
             mensaje += " e ";
-        }else{
+          } else {
             mensaje += iterator["name"];
-        }
-        contador++;
+          }
+          contador++;
 
-
-        iterator["kittens"].forEach(element => {
+          iterator["kittens"].forEach((element) => {
             gatiños++;
             element["gender"] == "f" ? f++ : m++;
-        });
-        
-
-        
-    }
-    console.log(mensaje);
-    console.log(`Hay ${gatiños} gatiños: ${f} femias e ${m} machos.`);
-});
-
-
-
-
-
-
-
-</script>
+          });
+        }
+        console.log(mensaje);
+        console.log(`Hay ${gatiños} gatiños: ${f} femias e ${m} machos.`);
+      })
+      
+  </script>
 </html>
-
