@@ -1,37 +1,41 @@
 function formatter(string) {
-    let salida = [];
-    arrayString = string.split("-");
-    arrayString.forEach(element => {
-        element = element.replace(element[0], element[0].toUpperCase())
-        salida.push(element);
-    });
-    return salida.join(' ');
-};
+  let salida = [];
+  arrayString = string.split("-");
+  arrayString.forEach((element) => {
+    element = element.replace(element[0], element[0].toUpperCase());
+    salida.push(element);
+  });
+  return salida.join(" ");
+}
+
+async function abilityPokemon(url) {
+  let response = await fetch(url);
+  salida = await response.json();
+  return salida;
+}
 
 function formatSearch(string) {
-    let invalidCharacters = /_|.| /;
-    salida = string.replace(" ", "-");
-    salida = salida.toLowerCase();
-    return salida;
+  let invalidCharacters = /_|.| /;
+  salida = string.replace(" ", "-");
+  salida = salida.toLowerCase();
+  return salida;
 }
 
 let input = document.getElementById("searchName");
 input.addEventListener("keypress", (e) => {
-    if (e.code == "Enter") {
+  if (e.code == "Enter") {
+    let searchType = document.getElementById("searchType").value;
+    let searchName = document.getElementById("searchName").value;
+    searchName = formatSearch(searchName);
 
-        let searchType = document.getElementById("searchType").value;
-        let searchName = document.getElementById("searchName").value;
-        searchName = formatSearch(searchName);
+    switch (searchType) {
+      case "pokemon":
+        if (document.getElementById("card") != null) {
+          document.getElementById("card").remove();
+        }
 
-        switch (searchType) {
-            case "pokemon":
-                if (document.getElementById("card") != null) {
-                    document.getElementById("card").remove();
-                }
-
-
-                let cardPokemon = document.createElement("div");
-                cardPokemon.innerHTML = `<div class="card shadow-sm" id="card">
+        let cardPokemon = document.createElement("div");
+        cardPokemon.innerHTML = `<div class="card shadow-sm" id="card">
                 <div class="card-body">
                   <div class="row">
                     <div class="col-4 p-3" id="pkmPrincipal">
@@ -81,123 +85,144 @@ input.addEventListener("keypress", (e) => {
                 </div>
                   
                     </div>`;
-                
-                document.getElementById("container").append(cardPokemon);
-                
-                fetch(`https://pokeapi.co/api/v2/pokemon/${searchName}`)
-                    //fetch(`pokemon.json`)
-                    .then((response) => {
-                        if (response.ok) return response.json();
-                        return Promise.reject(response);
-        
-                    }).then((data) => {
-                        let pokemon = data;
-                        
-                        //Sprites
-                        let pkmSprite = document.getElementById("pkmSprite");
-                        pkmSprite.src = pokemon["sprites"]["versions"]["generation-v"]["black-white"]["animated"]["front_default"];
-                        pkmSprite.hidden = false;
-        
-        
-                        //Numero y pokemon
-                        document.getElementById("pkmName").innerHTML = `${pokemon["id"]}# ${formatter(pokemon["name"])}`
-                        
-        
-                        //TYPES
-                        pokemon["types"].forEach(pkmType => {
-                            let type = document.createElement("img");
-                            type.src = `img/types/${pkmType["type"]["name"]}.png`;
-                            type.width = "50"
-                            let divTypes = document.getElementById("pkmTypes");
-                            divTypes.append(type);
-                        });
-        
-                        //STATS
-                        let contador = 0;
-                        pkmStats = document.getElementsByClassName("pkmStats");
-                        pokemon["stats"].forEach(stat => {
-                            pkmStats[contador].innerHTML = stat["base_stat"];
-                            contador++;
-                        })
-        
-        
-                        //ABILITIES
-                        let abilitySection = document.getElementById("abilities")
-                        pokemon["abilities"].forEach(ability => {
-                            
-                            fetch(ability["ability"]["url"])
-                                .then((response) => {
-                                    if (response.ok) return response.json();
-                                    return Promise.reject(response);
-                                })
-                                .then((data) => {
-                                    if(data[])
-                                    let abilityName = document.createElement("p");
-                                    abilityName.classList.add("pHead");
-                                    abilityName.innerHTML = formatter(ability["ability"]["name"]);
-                                    abilitySection.append((abilityName));
-        
-                                    let abilityDescription = document.createElement("p");
-                                    abilityDescription.classList.add("fs-6");
-                                    abilityDescription.classList.add("fw-light");
-        
-                                    data["flavor_text_entries"].forEach(description => {
-                                        if (description.language.name == "es") abilityDescription.innerHTML = description["flavor_text"];
-                                    });
-        
-                                    abilitySection.append(abilityDescription);
-                                });
-                        })
-        
-                        //Fin then
-                    })
-                break;
-            
-            case "ability":
-                if (document.getElementById("card") != null) {
-                    document.getElementById("card").remove();
-                }
 
-                let cardAbility = document.createElement("div");
-                cardAbility.innerHTML = `
-                    <div class="card shadow-sm" id="card">
+        document.getElementById("container").append(cardPokemon);
+
+        fetch(`https://pokeapi.co/api/v2/pokemon/${searchName}`)
+          //fetch(`pokemon.json`)
+          .then((response) => {
+            if (response.ok) return response.json();
+            return Promise.reject(response);
+          })
+          .then((data) => {
+            let pokemon = data;
+
+            //Sprites
+            let pkmSprite = document.getElementById("pkmSprite");
+            pkmSprite.src =
+              pokemon["sprites"]["versions"]["generation-v"]["black-white"][
+                "animated"
+              ]["front_default"];
+            pkmSprite.hidden = false;
+
+            //Numero y pokemon
+            document.getElementById("pkmName").innerHTML = `${
+              pokemon["id"]
+            }# ${formatter(pokemon["name"])}`;
+
+            //TYPES
+            pokemon["types"].forEach((pkmType) => {
+              let type = document.createElement("img");
+              type.src = `img/types/${pkmType["type"]["name"]}.png`;
+              type.width = "50";
+              let divTypes = document.getElementById("pkmTypes");
+              divTypes.append(type);
+            });
+
+            //STATS
+            let contador = 0;
+            pkmStats = document.getElementsByClassName("pkmStats");
+            pokemon["stats"].forEach((stat) => {
+              pkmStats[contador].innerHTML = stat["base_stat"];
+              contador++;
+            });
+
+            //ABILITIES
+            let abilitySection = document.getElementById("abilities");
+            pokemon["abilities"].forEach((ability) => {
+              fetch(ability["ability"]["url"])
+                .then((response) => {
+                  if (response.ok) return response.json();
+                  return Promise.reject(response);
+                })
+                .then((data) => {
+                  let abilityName = document.createElement("p");
+                  abilityName.classList.add("pHead");
+                  abilityName.innerHTML = formatter(ability["ability"]["name"]);
+                  abilitySection.append(abilityName);
+
+                  let abilityDescription = document.createElement("p");
+                  abilityDescription.classList.add("fs-6");
+                  abilityDescription.classList.add("fw-light");
+
+                  data["flavor_text_entries"].forEach((description) => {
+                    if (description.language.name == "es")
+                      abilityDescription.innerHTML = description["flavor_text"];
+                  });
+
+                  abilitySection.append(abilityDescription);
+                });
+            });
+
+            //Fin then
+          });
+        break;
+
+      case "ability":
+        if (document.getElementById("card") != null) {
+          document.getElementById("card").remove();
+        }
+
+        let cardAbility = document.createElement("div");
+        cardAbility.innerHTML = `
+                    <div class="card shadow-sm mb-3" id="card">
                         <div class="card-body">
                             <h4 id="abilityName"></h4>
                             <p id="abilityDescription"></p>
                         </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table p-3">
+                                <tbody>
+                            
+                                </tbody>
+                            </table>
+                        </div>
                     </div>`;
-                
-                document.getElementById("container").append(cardAbility);
 
-               
-                fetch(`https://pokeapi.co/api/v2/ability/${searchName}`)
-                    .then((response) => {
-                        if (response.ok) return response.json()
-                        return Promise.reject(response);
-                    })
-                    .then((data) => {
-                        let ability = data;
-                        //AbilityName
-                        document.getElementById("abilityName").innerHTML = formatter(ability.name);
+        document.getElementById("container").append(cardAbility);
 
-                        document.getElementById("abilityDescription").innerHTML = ability.effect_entries[1].effect;
-                    })
-                
+        fetch(`https://pokeapi.co/api/v2/ability/${searchName}`)
+          .then((response) => {
+            if (response.ok) return response.json();
+            return Promise.reject(response);
+          })
+          .then((data) => {
+            let ability = data;
+            //AbilityName
+            document.getElementById("abilityName").innerHTML = formatter(
+              ability.name
+            );
 
-                break;
-            case "move":
-                
-                break;
-        }
+            document.getElementById("abilityDescription").innerHTML =
+              ability.effect_entries[1].effect;
 
+            ability.pokemon.forEach((element) => {
+              let tr = document.createElement("tr");
+              let tdName = document.createElement("td");
+              let tdImg = document.createElement("td");
 
+              proba = abilityPokemon(element.pokemon.url).then(data);
+                console.log(proba);
 
-        
-    //Fin if e.code == enter
+              tdName.innerHTML = formatter(element.pokemon.name);
+              tdImg.innerHTML = `<img src=${data["sprites"]["versions"]["generation-v"]["black-white"][
+                "animated"
+              ]["front_default"]}></img>`;
+
+              tr.append(tdName);
+
+              document.querySelector("tbody").append(tr);
+            });
+          });
+
+        break;
+      case "move":
+        break;
     }
-//Fin evento
+
+    //Fin if e.code == enter
+  }
+  //Fin evento
 });
-
-
-          
-        
