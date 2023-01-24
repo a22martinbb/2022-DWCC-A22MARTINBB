@@ -8,17 +8,31 @@ function formatter(string) {
   return salida.join(" ");
 }
 
-async function abilityPokemon(url) {
+
+function formatter(string) {
+  let salida = [];
+  arrayString = string.split("-");
+  arrayString.forEach((element) => {
+    element = element.replace(element[0], element[0].toUpperCase());
+    salida.push(element);
+  });
+  return salida.join(" ");
+}
+
+
+async function searchUrl(url) {
   let response = await fetch(url);
   salida = await response.json();
   return salida;
 }
+
 
 function formatSearch(string) {
   salida = string.replace(" ", "-");
   salida = salida.toLowerCase();
   return salida;
 }
+
 
 let input = document.getElementById("searchName");
 input.addEventListener("keypress", (e) => {
@@ -35,10 +49,11 @@ input.addEventListener("keypress", (e) => {
 
         let cardPokemon = document.createElement("div");
         cardPokemon.innerHTML = `
-                <div class="card shadow-sm" id="contenedor">
+              <div id="contenedor">
+                <div class="card shadow-sm mb-3" >
                   <div class="card-body">
                     <div class="row">
-                      <div class="col-6 col-sm-4 colp-3" id="pkmPrincipal">
+                      <div class="col-12 col-sm-4" id="pkmPrincipal">
                         <div>
                           <h4 class="text-center" id="pkmName"></h4>
                           <img class="w-100 h-100 mb-3" id="pkmSprite" hidden>
@@ -46,7 +61,7 @@ input.addEventListener("keypress", (e) => {
                         </div>
                       </div>
           
-                      <div class="col-6 col-sm-8 p-3" id="pkmDescription">
+                      <div class="col-12 col-sm-8 p-3" id="pkmDescription">
                         <div id="abilities">
                             <h5>Abilities:</h5>
                         </div>
@@ -66,7 +81,7 @@ input.addEventListener("keypress", (e) => {
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
+                            <tr id="moveDate">
                               <td class="pkmStats"></td>
                               <td class="pkmStats"></td>
                               <td class="pkmStats"></td>
@@ -79,7 +94,29 @@ input.addEventListener("keypress", (e) => {
                       </div>
                     </div>
                   </div>
-                </div>`;
+                </div>
+                <div class="card shadow-sm">
+
+                  <div class="card-body">
+                    <table class="table text-center w-100" id="myTable">
+                      <thead>
+                        <tr>
+                          <th>Type</th>
+                          <th>Name</th>
+                          <th>Category</th>
+                          <th>Power</th>
+                          <th>Accuracy</th>
+                          <th>PP</th>
+                          <th>Description</th>
+                        </tr>
+                      </thead>
+                      <tbody id="moveDescription">
+                        
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>`;
 
         document.getElementById("container").append(cardPokemon);
 
@@ -92,12 +129,13 @@ input.addEventListener("keypress", (e) => {
           .then((data) => {
             let pokemon = data;
 
+            console.log(pokemon);
             //Sprites
             let pkmSprite = document.getElementById("pkmSprite");
             pkmSprite.src =
               pokemon["sprites"]["versions"]["generation-v"]["black-white"][
                 "animated"
-              ]["front_default"];
+              ]["front_default"] || pokemon["sprites"]["versions"]["generation-v"]["black-white"]["front_default"];
             pkmSprite.hidden = false;
 
             //Numero y pokemon
@@ -110,6 +148,7 @@ input.addEventListener("keypress", (e) => {
               let type = document.createElement("img");
               type.src = `img/types/${pkmType["type"]["name"]}.png`;
               type.width = "50";
+              
               let divTypes = document.getElementById("pkmTypes");
               divTypes.append(type);
             });
@@ -149,14 +188,53 @@ input.addEventListener("keypress", (e) => {
                 });
             });
 
-            //Fin then
+            //MOVES
+            let tbody = document.getElementById("moveDescription");
+            pokemon.moves.forEach(element =>
+            {
+              let move = searchUrl(element.move.url);
+              move.then((moveData) =>
+              {
+                let tr = document.createElement("tr");
+                let tdName = document.createElement("td");
+                let tdType = document.createElement("td");
+                let tdCategory = document.createElement("td");
+                let tdPp = document.createElement("td");
+                let tdPower = document.createElement("td");
+                let tdAccuracy = document.createElement("td");
+                let tdDescription = document.createElement("td");
+                let imgType = document.createElement("img");
+                let imgCategory = document.createElement("img");
+                
+
+                imgType.src = `img/types/${moveData.type.name}.png`;
+                tdName.innerHTML = formatter(moveData.name);
+                imgCategory.src = `img/categories/${moveData.damage_class.name}.png`;
+                tdPp.innerHTML = moveData.pp;
+                tdPower.innerHTML = moveData.power ? moveData.power : "-";
+                tdAccuracy.innerHTML = moveData.accuracy ? moveData.accuracy: "-";
+
+                tdType.append(imgType);
+                tdCategory.append(imgCategory);
+                tr.append(tdType);
+                tr.append(tdName);
+                tr.append(tdCategory);
+                tr.append(tdPower);
+                tr.append(tdAccuracy);
+                tr.append(tdPp);
+                tr.append(tdDescription);
+
+          
+                tbody.append(tr); 
+                console.log(moveData);
+              })
+              
+            });
+            //Fin then            
           });
+          
         break;
 
-      
-      
-      
-      
       case "ability":
         if (document.getElementById("contenedor") != null) {
           document.getElementById("contenedor").remove();
@@ -204,7 +282,7 @@ input.addEventListener("keypress", (e) => {
               ability.name
             );
 
-            console.log(ability.effect_entries[0].language.name);
+
             if (ability.effect_entries[0].language.name == "en") {
               document.getElementById("abilityDescription").innerHTML =
                 ability.effect_entries[0].effect;
@@ -213,7 +291,6 @@ input.addEventListener("keypress", (e) => {
                 ability.effect_entries[1].effect;
             }
 
-
             //LISTA DE POKEMONS
             ability.pokemon.forEach((element) => {
               let tr = document.createElement("tr");
@@ -221,24 +298,23 @@ input.addEventListener("keypress", (e) => {
               let tdImg = document.createElement("td");
               let tdTypes = document.createElement("td");
 
-              proba = abilityPokemon(element.pokemon.url);
+              proba = searchUrl(element.pokemon.url);
               proba.then((data) => {
                 tdImg.innerHTML = `<img src=${data["sprites"]["versions"]["generation-viii"]["icons"]["front_default"]} class="w-50 h-50"></img>`;
 
-                data.types.forEach(type => {
-                  console.log(type);
+                data.types.forEach((type) => {
                   let imgType = document.createElement("img");
 
                   imgType.src = `img/types/${type.type.name}.png`;
                   tdTypes.append(imgType);
-                  tdTypes.classList.add("w-10")
+                  tdTypes.classList.add("w-10");
                 });
               });
 
               tdName.innerHTML = formatter(element.pokemon.name);
 
               tr.classList.add("align-middle");
-              
+
               tr.append(tdImg);
               tr.append(tdTypes);
               tr.append(tdName);
@@ -248,13 +324,15 @@ input.addEventListener("keypress", (e) => {
           });
 
         break;
-      
-      
+
       case "move":
         break;
     }
 
     //Fin if e.code == enter
   }
-  //Fin evento
+  //Fin evento  
+  
 });
+
+

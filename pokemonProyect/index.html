@@ -3,37 +3,55 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="css/bootstrap.min.css"
-rel="stylesheet"
- crossorigin="anonymous">
+  <link href="css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
  <title>Pokedex</title>
 </head>
 
 <body>
-  <script src="js/bootstrap.bundle.js"
-  crossorigin="anonymous"></script>
+
   
 
   <div class="container mt-5" id="container">
-
     <div class="input-group input-group-sm mb-3 shadow-sm">
       <select class="input-group-text" id="searchType">
         <option value="pokemon" selected>Pokemon</option>
         <option value="ability">Ability</option>
-        <option value="move">Move</option>
+        <option value="move" selected>Move</option>
       </select>
-      <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="searchName" value="gliscor">
+      <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="searchName" value="earthquake">
     </div>
 
-    
+    <div id="contenedor">
+      <div class="row">
+        <div class="col-6">
+          <div class="card">
 
-
-    
-    
+            <div class="card-body">
+              <div class="d-flex justify-content-around">
+                <h3>Earthquake</h3>
+                <img src="img/types/ground.png" width="50" height="" alt="">
+              </div>
+              
+              Categoría <img src="img/categories/physical.png"  alt="">
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="card">
+            <div class="card-body">
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
+  
 
- 
+
+  <script src="js/bootstrap.bundle.js" crossorigin="anonymous"></script>
+  <script src="pokemon.js"></script>
 </body>
-<script src="pokemon.js"></script>
+
 </html>
