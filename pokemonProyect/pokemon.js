@@ -325,8 +325,20 @@ input.addEventListener("keypress", (e) => {
 
         break;
 
+      
+      
       case "move":
-        break;
+        fetch(`https://pokeapi.co/api/v2/move/${searchName}`)
+          .then((response) => {
+            if (response.ok) return response.json();
+            return Promise.reject(response);
+          })
+          .then((data) => {
+            
+
+            
+          })
+          break;
     }
 
     //Fin if e.code == enter
