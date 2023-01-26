@@ -129,7 +129,6 @@ input.addEventListener("keypress", (e) => {
           .then((data) => {
             let pokemon = data;
 
-            console.log(pokemon);
             //Sprites
             let pkmSprite = document.getElementById("pkmSprite");
             pkmSprite.src =
@@ -225,8 +224,7 @@ input.addEventListener("keypress", (e) => {
                 tr.append(tdDescription);
 
           
-                tbody.append(tr); 
-                console.log(moveData);
+                tbody.append(tr);
               })
               
             });
@@ -334,9 +332,126 @@ input.addEventListener("keypress", (e) => {
             return Promise.reject(response);
           })
           .then((data) => {
-            
+            let move = data;
 
-            
+            if (document.getElementById("contenedor") != null) {
+              document.getElementById("contenedor").remove();
+            }
+    
+            let cardMove = document.createElement("div");
+            cardMove.innerHTML = `
+              <div id="contenedor">
+                <div class="row">
+                  <div class="col-4">
+                    <div class="card shadow">
+                      <div class="card-body">
+                        <h3 id="moveName" class="d-inline align-middle">Earthquake</h3>
+                      </div>
+                      <table class="table table-striped">
+                        <tbody class="text-center">
+                          <tr>
+                            <td>Type</td>
+                            <td><img id="moveType" src="" /></td>
+                          </tr>
+                          <tr>
+                            <td>Category</td>
+                            <td><img id="moveCategory" src="" alt="" /></td>
+                          </tr>
+                          <tr>
+                            <td>Power</td>
+                            <td id="movePower">100</td>
+                          </tr>
+                          <tr>
+                            <td>Accuracy</td>
+                            <td id="moveAccuracy">100</td>
+                          </tr>
+                          <tr>
+                            <td>PP</td>
+                            <td id="movePp">15</td>
+                          </tr>
+                          <tr id="trPriority" hidden>
+                            <td>Priority</td>
+                            <td id="movePriority">0</td>
+                          </tr>
+                          <tr id="trCritical" hidden>
+                            <td>Critical</td>
+                            <td id="moveCritical">0</td>
+                          </tr>
+                          <tr id="trPriority" hidden>
+                            <td>Priority</td>
+                            <td id="movePriority">0</td>
+                          </tr>
+                          <tr id="trAilment" hidden>
+                            <td>State Changes</td>
+                            <td id="move">0</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+        
+                  <div class="col-8">
+                    <div class="card shadow mb-4">
+                      <div class="card-body">
+                        <h5>Description:</h5>
+                        <p id="moveDescription">
+                          
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="card shadow">
+                          <div class="card-body">
+                              <table class="table" >
+                                  <tbody id="pokemonList">
+                              
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+              </div>`;
+            document.getElementById("container").append(cardMove)
+
+            document.getElementById("moveName").innerHTML = formatter(move.name);
+            document.getElementById("moveType").src = `img/types/${move.type.name}.png`;
+            document.getElementById("moveCategory").src = `img/categories/${move.damage_class.name}.png`;
+            document.getElementById("movePower").innerHTML = move.power;
+            document.getElementById("moveAccuracy").innerHTML = move.accuracy;
+            document.getElementById("movePp").innerHTML = move.pp;
+            document.getElementById("movePriority").innerHTML = move.priority;
+            document.getElementById("moveDescription").innerHTML = move.effect_entries[0].effect;
+
+            move.learned_by_pokemon.forEach((element) => {
+              let tr = document.createElement("tr");
+              let tdName = document.createElement("td");
+              let tdImg = document.createElement("td");
+              let tdTypes = document.createElement("td");
+
+              proba = searchUrl(element.url);
+              proba.then((data) => {
+                tdImg.innerHTML = `<img src=${data["sprites"]["versions"]["generation-viii"]["icons"]["front_default"]} class="w-50 h-50"></img>`;
+
+                data.types.forEach((type) => {
+                  let imgType = document.createElement("img");
+
+                  imgType.src = `img/types/${type.type.name}.png`;
+                  tdTypes.append(imgType);
+                  tdTypes.classList.add("w-10");
+                });
+              });
+
+              tdName.innerHTML = formatter(element.name);
+
+              tr.classList.add("align-middle");
+
+              tr.append(tdImg);
+              tr.append(tdTypes);
+              tr.append(tdName);
+
+              document.getElementById("pokemonList").append(tr);
+            });
           })
           break;
     }

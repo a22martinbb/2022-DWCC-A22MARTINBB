@@ -1,0 +1,28 @@
+{
+  "clientes": [
+    {
+      "telefono" : 698,
+      "enderezo" : "Rua do Horreo",
+      "common" : "Cantidades Ingentes de Comida"
+    },
+    {
+      "telefono" : 605,
+      "enderezo" : "Rua da Rosa",
+      "common" : "Pañales"
+    }
+  ],
+  "pedidos" : [
+    {
+      "telefono": 605,
+      "pedido" : "Cajas de pañales"
+    },
+    {
+      "telefono": 605,
+      "pedido" : "Tortias de arroz"
+    },
+    {
+      "telefono": 698,
+      "pedido" : "Espinacas 5kg"
+    }
+  ]
+}
