@@ -1,52 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-</head>
-<body>
-    
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
     <div class="container-sm mt-5">
-        <div class="card shadow">
-            <div class="card-body">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Teléfono" >
-                </div>
-                <button class="btn btn-success" id="submit">Enviar</button>
+      <div class="col-6">
+        <div class="card shadow mb-5">
+          <div class="card-body">
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="Teléfono" />
             </div>
-            
+            <button class="btn btn-success" id="submit">Enviar</button>
+          </div>
         </div>
+        <!-- Tarxeta de Usuario -->
+        <div class="card shadow" id="cardUser" hidden>
+          <div class="card-body">
+            <h5 id="tlf"></h5>
+            <p id="enderezo"></p>
+            <div class="input-group mb-3">
+                <input class="form-control" id="common"></input>
+            </div>
+           
+            <button class="btn btn-primary " id="pedido">Realizar Pedido</button>
+          </div>
+        </div>
+      </div>
     </div>
 
-
-
-
-
-
-
-
     <script>
-        async function consultarProduto(telefono) {
-            let response = await fetch(
-            `http://localhost:3000/clientes/?telefono=${telefono}`
-            );
-            let data = await response.json();
-            console.log(data);
+      async function consultarProduto(telefono) {
+        let response = await fetch(
+          `http://localhost:3000/clientes/?telefono=${telefono}`
+        );
+
+        let data = await response.json();
+        console.log(telefono);
+        return data;
+      }
+
+      async function procesarProduto(newProduct) {
+        console.log(newProduct);
+        try {
+          let response = await fetch("http://localhost:3000/pedidos", {
+            method: "POST",
+            headers: {
+            "Content-type": "application/json;charset=utf-8",
+            },
+            body: JSON.stringify(newProduct),
+          });
+
+          let data = await response.json();
+          console.log(data);
+
+        } catch (error) {
+          return error;
         }
-        
+      }
+      
+      
 
-        document.getElementById("submit").addEventListener("click", ()=>{
-            let usuario = document.querySelector("input").value;
-            consultarProduto(usuario)
-        })
-        
+      document.getElementById("submit").addEventListener("click", () => {
+        let usuario = document.querySelector("input").value;
+        let cardUser = document.getElementById("cardUser");
+        let jsonUsuario = consultarProduto(usuario);
 
+        jsonUsuario.then((data) => {
+            console.log(data);
+            cardUser.hidden = false;
 
+            document.getElementById("tlf").innerHTML = data[0].telefono;
+            document.getElementById("enderezo").innerHTML = data[0].enderezo;
+            document.getElementById("common").value = data[0].common;
+        });
 
+      });
+
+      document.getElementById("pedido").addEventListener("click", ()=>{
+
+        let newPedido = {
+            telefono: document.getElementById("tlf").innerHTML,
+            pedido: document.getElementById("common").innerHTML
+        }
+
+        console.log(newPedido);
+        procesarProduto(newPedido);
+
+      })
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-</body>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>
