@@ -463,3 +463,46 @@ input.addEventListener("keypress", (e) => {
 });
 
 
+
+
+
+
+
+
+
+
+
+async function getPokemonData(pokemonName) {
+  const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
+  const pokemonData = await response.json();
+
+  const types = pokemonData.types.map(type => type.type.name);
+  console.log(types.join(", "));
+
+  const weaknesses = [];
+  const resistances = [];
+  const immunities = [];
+
+  for (const type of types) {
+    const response = await fetch(`https://pokeapi.co/api/v2/type/${type}`);
+    const typeData = await response.json();
+
+    for (const weakness of typeData.damage_relations.double_damage_from) {
+        weaknesses.push(weakness.name);
+    }
+
+    for (const resistance of typeData.damage_relations.half_damage_from) {
+      resistances.push(resistance.name);
+    }
+
+    for (const immunity of typeData.damage_relations.no_damage_from) {
+      immunities.push(immunity.name);
+    }
+  }
+
+  console.log(weaknesses);
+  console.log(resistances);
+  console.log(immunities);
+}
+
+getPokemonData("charizard");
