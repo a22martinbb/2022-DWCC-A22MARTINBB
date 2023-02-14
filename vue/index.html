@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <h2>{{ nome }}</h2>
+      <h5>{{ data }}</h5>
+      <h5>{{ data +5}}</h5>
+      <img width="200px" v-bind:src="imagen" alt=""/><br />
+      <textarea name="" id="" cols="30" rows="2" v-bind:value="nome"></textarea>
+      <button @click="contador++">Contador {{contador}}</button>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+      //b
+      let anoActual = new Date();
+      anoActual = anoActual.getFullYear();
+
+
+      const proba = Vue.createApp({
+        data() {
+          return {
+            nome: "Martín",
+            data: anoActual,
+            imagen: "avion.jpg",
+            contador: 0,
+          };
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>

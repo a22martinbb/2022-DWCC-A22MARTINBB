@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <input type="text" :value="texto" @keyup="mostrarTexto">
+      <br />
+      <p>Parrafo:</p>
+      <p>{{ texto }}</p>
+    </div>
+  </body>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script>
+    const eventoTexto = Vue.createApp({
+      data() {
+        return {
+          texto: "",
+        }
+      },
+      methods: {
+        mostrarTexto(evento) {
+            this.texto = e.target.value;
+        },
+      },
+    }).mount("#app");
+  </script>
+</html>

@@ -1,8 +1,25 @@
 let lat;
 let lng;
 let formulario = document.getElementById("formulario");
-let latitudeSpan = document.getElementById("latitude").innerHTML;
-let longitudSpan = document.getElementById("longitud").innerHTML;
+let latitudeSpan = document.getElementById("latitude");
+let longitudSpan = document.getElementById("longitud");
+// let pines = [{
+  
+//     "description": "cangas",
+//     "latitude": 43.495654,
+//     "longitud": -8.215468,
+  
+// }];
+
+
+if (localStorage.getItem("pinesStorage") != null) {
+  pines = JSON.parse(localStorage.getItem("pinesStorage"));
+  pines = pines.pines
+} else {
+  let pines = [];
+}
+
+
 
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(function (position) {
@@ -10,7 +27,7 @@ if (navigator.geolocation) {
     lng = position.coords.longitude;
 
     //Inicializar el Mapa
-    let map = L.map("map").setView([lat, lng], 7);
+    const map = L.map("map").setView([lat, lng], 7);
 
     //Cargar la el mapa
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -19,41 +36,70 @@ if (navigator.geolocation) {
         '&copy; <a href="http://www.openstreetmap.org/copyright">Cositas Del Martin</a>',
     }).addTo(map);
 
+
+    console.log(pines);
+    if (pines != null) {
+      pines.forEach((element) => {
+        console.log(element);
+          let card = document.createElement("div");
+          card.innerHTML = `<div class="col-6 mb-3">
+                                  <div class="card shadow-sm">
+                                      <div class="card-body">
+                                          <h5>${element.description}</h5>
+                                          <p> ${element.latitude} |
+                                          ${element.longitud}</p>
+                                          <button class="btn btn-primary btn-sm">Centrar</button>
+                                      </div>
+                                  </div>
+                              </div>`;
+        
+          let marker = L.marker([element.latitude, element.longitud]).addTo(map);
+        
+          marker.bindPopup(element.description).openPopup();
+          let marcadores = document.getElementById("marcadores");
+          marcadores.append(card);
+        });
+    }
+   
+
+
+
+
+
+
     function onMapClick(e) {
       formulario.hidden = false;
-      latitudeSpan = e.latlng.lat;
-      longitudSpan = e.latlng.lng;
+      latitudeSpan.innerHTML = e.latlng.lat;
+      longitudSpan.innerHTML = e.latlng.lng;
+
+      latitud = e.latlng.lat;
+      longitud = e.latlng.lng;
     }
-      map.on("click", onMapClick);
+
+    map.on("click", onMapClick);
+
+
+
+
+    document.getElementById("savePin").addEventListener("click", () => {
+      let description = document.getElementById("description").value;
+
+      pines.push({
+        "description": description,
+        "latitude": latitud,
+        "longitud": longitud,
+      });
+
+      localStorage.setItem("pinesStorage", JSON.stringify({ pines }))
+
+      location.reload();
       
 
+
+    });
   });
 } else {
   console.log("Geolocation is not supported by this browser.");
 }
 
 
-document.getElementById("savePin").addEventListener("click", (e) => {
-    let description = document.getElementById("description").value;
-  
-    formulario.hidden = true;
-  
-    let card = document.createElement("div");
-    card.innerHTML = `<div class="col-6 mb-3">
-                          <div class="card">
-                              <div class="card-body">
-                                  <h5>${description}</h5>
-                                  <p> ${latitudeSpan.innerHTML} | ${longitudSpan.innerHTML}</p>
-                                  <button class="btn btn-primary btn-sm">Centrar</button>
-                              </div>
-                          </div>
-                      </div>`;
-  
-    let marker = L.marker([latitudeSpan, longitudSpan]).addTo(map);
-  
-
-  
-    let marcadores = document.getElementById("marcadores");
-    marcadores.append(card);
-
-  });

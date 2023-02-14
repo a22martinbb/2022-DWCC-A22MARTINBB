@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style></style>
+  </head>
+  <body>
+    <div id="app">
+      <input type="text" /><br /><br />
+
+      <textarea name="" id="" cols="17" rows="4"></textarea><br /><br />
+
+      <!-- Radio buttons -->
+      <div>Picked: {{ radio }}</div>
+      <input type="radio" id="one" value="One" v-model="radio" />
+      <label for="one">One</label>
+
+      <input type="radio" id="two" value="Two" v-model="radio" />
+      <label for="two">Two</label>
+      <br /><br />
+
+      <!-- Select -->
+      <div>Selected: {{selected}}</div>
+      <select v-model="selected">
+        <option>Mar Salada</option>
+        <option>Agua Dulce</option>
+      </select>
+      <br /><br />
+
+      <!-- Checkboxes -->
+      <div>{{checked}}</div>
+      <input type="checkbox" value="Ferrol" id="checkbox" v-model="checked" />
+      <label for="checkbox">Ferrol</label>
+      <br />
+      <input type="checkbox" id="checkbox" value="Valencia" v-model="checked" />
+      <label for="checkbox">Valencia</label>
+      <br />
+      <input type="checkbox" id="checkbox" value="Madrid" v-model="checked" />
+      <label for="checkbox">Madrid</label>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+      const proba = Vue.createApp({
+        data() {
+          return {
+            radio: "One",
+            selected: "salada",
+            checked: [],
+          };
+        },
+        methods: {},
+      }).mount("#app");
+    </script>
+  </body>
+</html>
