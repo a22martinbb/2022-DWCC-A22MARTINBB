@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 3em;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+
+      <label for="caixa1">Caixa A:</label><br>
+      <input type="number" id="caixa1" v-model="num1">
+      <br><br>
+      <label for="caixa2">Caixa B:</label><br>
+      <input type="number" id="caixa2" v-model="num2">
+      <br><br>
+      <label for="caixa2">Resultado</label><br>
+      <input type="number" id="caixa3" v-model="resultado" disabled>
+
+    </div>
+
+
+    <!-- Script -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+      const app = Vue.createApp({
+        data(){
+          return {
+            num1: 0,
+            num2: 0,
+            resultado: 0,
+          }
+        },
+        methods: {
+          suma(){
+            this.resultado = this.num1 + this.num2;
+          }
+        },
+        watch: {
+          num1(){
+            this.suma();
+          },
+          num2(){
+            this.suma();
+          }
+        }
+      }).mount("#app")
+    </script>
+  </body>
+</html>
