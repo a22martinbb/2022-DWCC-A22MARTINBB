@@ -18,27 +18,41 @@ const app = Vue.createApp({
             lose: false,
             draw: false,
             //
-            registro: "",
+            registro: [],
         }
     },
     methods: {
         ataqueMonstruo() {
             potenciaAtaque = random(8,15);
             this.vidaPlayer -= potenciaAtaque;
+
+            this.registro.push(`
+            <span class=log--monster>Monstruo</span>
+             ataca con
+             <span class='log--damage'>${potenciaAtaque}</span>`);
         },
         ataquePlayer() {
             this.contadorEspecial++;
             potenciaAtaque = random(5,12);
             this.vidaMonstruo -= potenciaAtaque;
-            this.ataqueMonstruo();
 
-            this.registro += ${`<li><span class=log--player>Vostede</span> ataca con <span class='log--damage>" + potenciaAtaque + "</span></li></br>`}
+            this.registro.push(`
+            <span class=log--player>Vostede</span>
+             ataca con
+             <span class='log--damage'>${potenciaAtaque}</span>`);
+
+            this.ataqueMonstruo();
         },
         ataqueEspecial() {
             this.especialDisabled = true;
             this.contadorEspecial = 0;
             potenciaAtaque = random(10, 25);
             this.vidaMonstruo -= potenciaAtaque;
+
+            this.registro.push(`
+            <span class=log--player>Vostede</span>
+             ataque especial 
+             <span class='log--damage'>${potenciaAtaque}</span>`);
             this.ataqueMonstruo();
             
         },
@@ -46,6 +60,12 @@ const app = Vue.createApp({
             this.contadorEspecial++;
             cantidadCuracion = random(8, 20);
             this.vidaPlayer += cantidadCuracion;
+            
+            this.registro.push(`
+            <span class=log--player>Vostede</span>
+             se curó
+             <span class='log--heal'>${cantidadCuracion}</span>`);
+            
             this.ataqueMonstruo();
         },
         xogoNovo() {
@@ -58,6 +78,7 @@ const app = Vue.createApp({
             this.lose = false;
             this.draw = false;
 
+            this.registro = [];
         }
         
     },
@@ -73,10 +94,8 @@ const app = Vue.createApp({
                 this.showResultado = true;
 
                 if ((this.vidaPlayer == 0) && (this.vidaMonstruo == 0)) {
-                    console.log("as");
                     this.draw = true;
                 } else {
-                    console.log("dsaf");
                     this.lose = true;
                 }
                     
@@ -89,7 +108,6 @@ const app = Vue.createApp({
                 this.showResultado = true;
 
                 if ((this.vidaPlayer == 0) && (this.vidaMonstruo == 0)) {
-                    console.log("as");
                     this.draw = true;
                 } else {
                     this.win = true;

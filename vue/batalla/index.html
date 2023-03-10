@@ -47,7 +47,11 @@
     </section>
     <section id="log" class="container">
       <h2>Rexistro da batalla</h2>
-      <ul v-html="registro"></ul>
+      <ul>
+        <li v-for="entrada in registro">
+          <div v-html="entrada"></div>
+        </li>
+      </ul>
     </section>
   </div>
 </body>
